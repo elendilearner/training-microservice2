@@ -1,35 +1,67 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.5'
-	id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id "org.openapi.generator" version "7.5.0"
 }
 
 group = 'com.education'
 version = '1.0.0'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok:1.18.30'
-	annotationProcessor 'org.projectlombok:lombok:1.18.30'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testCompileOnly 'org.projectlombok:lombok:1.18.30'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+
+
+openApiGenerate {
+    generatorName.set("spring")
+    inputSpec.set("$rootDir/src/main/resources/carWashBookingAPI.yml")
+    outputDir.set("$buildDir/generated/openapi")
+    apiPackage.set("com.education.api")
+    modelPackage.set("com.education.api.model")
+    configOptions.set([
+            dateLibrary                   : "java8",
+            interfaceOnly                 : "true",
+            useJakartaEe                  : "true",
+            openApiNullable               : "false",
+            delegatePattern               : "true",
+            additionalModelTypeAnnotations: "@lombok.Data @lombok.Builder @lombok.NoArgsConstructor @lombok.AllArgsConstructor"
+    ])
+}
+
+tasks.build.dependsOn tasks.openApiGenerate
+
+tasks {
+    test.useJUnitPlatform()
+}
+
+compileJava.mustRunAfter 'openApiGenerate'
+
+sourceSets {
+    main {
+        java {
+            srcDirs += 'build/generated/openapi/src/main/java'
+        }
+    }
 }
