@@ -14,14 +14,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BookingRequest'
+              $ref: '#/components/schemas/BookingRq'
       responses:
         '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BookingResponse'
+                $ref: '#/components/schemas/BookingRs'
         '400':
           description: Bad Request
         '500':
@@ -44,15 +44,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AvailableSlotsResponse'
+                $ref: '#/components/schemas/AvailableSlotsRs'
         '400':
           description: Bad Request
         '500':
           description: Internal Server Error
 components:
   schemas:
-    BookingRequest:
-      title: BookingRequest
+    BookingRq:
+      title: BookingRq
       type: object
       properties:
         date:
@@ -74,47 +74,49 @@ components:
           enum: [ standard, premium ]
           example: "standard"
           description: Type of car wash service (standard or premium)
-    BookingResponse:
+    BookingRs:
       type: object
-      title: BookingResponse
+      title: BookingRs
       properties:
         booking_id:
           type: string
           example: "789012"
           description: ID of the newly created booking
-    AvailableSlotsResponse:
-      title: AvailableSlotsResponse
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: integer
-            example: 1
-            description: ID of the branch
-          name:
-            type: string
-            example: "Шаболовская"
-            description: Name of the branch
-          address:
-            type: string
-            example: "115419, г.Москва, ул.2-й Верхний Михайловский проезд, д. 9, стр. 2"
-            description: Address of the branch
-          phone:
-            type: string
-            example: "+7 (495) 777-88-99"
-            description: Phone number of the branch
-          filialId:
-            type: string
-            example: "59fb036d4ccd782ac6458487"
-            description: ID of the branch
-          workHours:
-            type: string
-            example: "Ежедневно с 8:00 до 22:00"
-            description: Working hours of the branch
-          slots:
-            type: array
-            items:
-              type: string
-              example: "09:00"
-              description: Available time slot
+    AvailableSlotsRs:
+      title: AvailableSlotsRs
+      properties:
+        availableSlots:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+                description: ID of the branch
+              name:
+                type: string
+                example: "Шаболовская"
+                description: Name of the branch
+              address:
+                type: string
+                example: "115419, г.Москва, ул.2-й Верхний Михайловский проезд, д. 9, стр. 2"
+                description: Address of the branch
+              phone:
+                type: string
+                example: "+7 (495) 777-88-99"
+                description: Phone number of the branch
+              filialId:
+                type: string
+                example: "59fb036d4ccd782ac6458487"
+                description: ID of the branch
+              workHours:
+                type: string
+                example: "Ежедневно с 8:00 до 22:00"
+                description: Working hours of the branch
+              slots:
+                type: array
+                items:
+                  type: string
+                  example: "09:00"
+                  description: Available time slot

@@ -36,7 +36,7 @@ dependencies {
 
 openApiGenerate {
     generatorName.set("spring")
-    inputSpec.set("$rootDir/src/main/resources/carWashBookingAPI.yml")
+    inputSpec.set("$projectDir/src/main/resources/carWashBookingAPI.yml")
     outputDir.set("$buildDir/generated/openapi")
     apiPackage.set("com.education.api")
     modelPackage.set("com.education.api.model")
